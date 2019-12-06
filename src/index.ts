@@ -7,7 +7,7 @@ export interface IScreenshotOptions {
   launchOptions: LaunchOptions;
 }
 
-export const screenshot = async (
+export const takeScreenshot = async (
   { launchOptions }: IScreenshotOptions = { launchOptions: {} }
 ) => {
   const browser = await pupetter.launch(launchOptions);
@@ -18,20 +18,23 @@ export const screenshot = async (
   await open(path, { wait: false });
 };
 
+export const paparazzi = (
+  fn: any,
+  options: IScreenshotOptions = { launchOptions: {} }
+) => async () => {
+  try {
+    await fn();
+  } catch (e) {
+    if (!isCi) await takeScreenshot(options);
+    throw e;
+  }
+};
+
 export const takeScreenshotOnTestError = (
   options: IScreenshotOptions = { launchOptions: {} }
 ) => {
-  const wrapTestToMakeScreenshotOnError = (fn: any) => async () => {
-    try {
-      await fn();
-    } catch (e) {
-      if (!isCi) await screenshot(options);
-      throw e;
-    }
-  };
-
   const wrapApply = (target: jest.It, that: any, args: Parameters<jest.It>) => {
-    args[1] = wrapTestToMakeScreenshotOnError(args[1]);
+    args[1] = paparazzi(args[1], options);
     target.apply(that, args);
   };
 
