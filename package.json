@@ -1,6 +1,6 @@
 {
   "name": "@error-paparazzi/jest",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "Make screenshot of JSDOM when your jest test failed",
   "main": "lib/index.js",
   "scripts": {
