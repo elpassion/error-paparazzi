@@ -1,12 +1,12 @@
 import isCi from "is-ci";
 import open from "open";
 import tmp from "tmp";
-import pupetter from "puppeteer";
+import pupetter, { LaunchOptions } from "puppeteer";
 
-const screenshot = async () => {
-  const browser = await pupetter.launch({
-    defaultViewport: { width: 375, height: 812 }
-  });
+const screenshot = async (
+  { launchOptions }: { launchOptions?: LaunchOptions } = { launchOptions: {} }
+) => {
+  const browser = await pupetter.launch(launchOptions);
   const page = await browser.newPage();
   await page.setContent(document.documentElement.outerHTML);
   const path = tmp.fileSync({ postfix: ".png" }).name;
@@ -14,12 +14,14 @@ const screenshot = async () => {
   await open(path, { wait: false });
 };
 
-export const takeScreenshotOnError = () => {
+export const takeScreenshotOnError = (
+  params: Parameters<typeof screenshot>
+) => {
   const makeScreenshotOnFail = (fn: any) => async () => {
     try {
       await fn();
     } catch (e) {
-      if (!isCi) await screenshot();
+      if (!isCi) await screenshot(...params);
       throw e;
     }
   };
