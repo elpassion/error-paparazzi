@@ -1,0 +1,25 @@
+{
+  "name": "@error-paparazzi/jest",
+  "version": "0.0.1",
+  "description": "Make screenshot of JSDOM when your jest test failed",
+  "main": "index.js",
+  "scripts": {
+    "test": "npm run test"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/elpassion/error-paparazzi.git"
+  },
+  "keywords": [
+    "jest",
+    "error",
+    "jsdom",
+    "screenshot"
+  ],
+  "author": "Michał Warda",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/elpassion/error-paparazzi/issues"
+  },
+  "homepage": "https://github.com/elpassion/error-paparazzi#readme"
+}
