@@ -2,9 +2,11 @@
   "name": "@error-paparazzi/jest",
   "version": "0.0.1",
   "description": "Make screenshot of JSDOM when your jest test failed",
-  "main": "index.js",
+  "main": "lib/index.js",
   "scripts": {
-    "test": "npm run test"
+    "test": "npm run test",
+    "build": "tsc",
+    "prepublish": "npm run build"
   },
   "repository": {
     "type": "git",
