@@ -1,5 +1,6 @@
-import pupetter from "puppeteer";
-export declare const takeScreenshotOnError: (params: [({
-    launchOptions?: pupetter.LaunchOptions | undefined;
-} | undefined)?]) => void;
+import { LaunchOptions } from "puppeteer";
+export interface IScreenshotOptions {
+    launchOptions: LaunchOptions;
+}
+export declare const takeScreenshotOnTestError: (options?: IScreenshotOptions) => void;
 //# sourceMappingURL=index.d.ts.map

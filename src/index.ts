@@ -3,8 +3,12 @@ import open from "open";
 import tmp from "tmp";
 import pupetter, { LaunchOptions } from "puppeteer";
 
+export interface IScreenshotOptions {
+  launchOptions: LaunchOptions;
+}
+
 const screenshot = async (
-  { launchOptions }: { launchOptions?: LaunchOptions } = { launchOptions: {} }
+  { launchOptions }: IScreenshotOptions = { launchOptions: {} }
 ) => {
   const browser = await pupetter.launch(launchOptions);
   const page = await browser.newPage();
@@ -14,20 +18,20 @@ const screenshot = async (
   await open(path, { wait: false });
 };
 
-export const takeScreenshotOnError = (
-  params: Parameters<typeof screenshot>
+export const takeScreenshotOnTestError = (
+  options: IScreenshotOptions = { launchOptions: {} }
 ) => {
-  const makeScreenshotOnFail = (fn: any) => async () => {
+  const wrapTestToMakeScreenshotOnError = (fn: any) => async () => {
     try {
       await fn();
     } catch (e) {
-      if (!isCi) await screenshot(...params);
+      if (!isCi) await screenshot(options);
       throw e;
     }
   };
 
   const wrapApply = (target: jest.It, that: any, args: Parameters<jest.It>) => {
-    args[1] = makeScreenshotOnFail(args[1]);
+    args[1] = wrapTestToMakeScreenshotOnError(args[1]);
     target.apply(that, args);
   };
 
