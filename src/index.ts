@@ -7,7 +7,7 @@ export interface IScreenshotOptions {
   launchOptions: LaunchOptions;
 }
 
-const screenshot = async (
+export const screenshot = async (
   { launchOptions }: IScreenshotOptions = { launchOptions: {} }
 ) => {
   const browser = await pupetter.launch(launchOptions);
